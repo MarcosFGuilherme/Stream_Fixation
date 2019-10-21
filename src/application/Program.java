@@ -42,17 +42,21 @@ public class Program {
 			List<Employee> filterList = list.stream()
 					.filter(e -> e.getSalary() > salary)
 					.collect(Collectors.toList());
-			
 			showEmployee(filterList,"Data of people whose salary is more than [" + String.format("%.2f", salary) + "]:");
+			System.out.println();
 			
 			List<String> filterEmail = filterList.stream()
 					.map(e -> e.getEmail())
 					.sorted((s1,s2) -> s1.compareTo(s2))
 					.collect(Collectors.toList());
-					
-					
-			showEmail(filterEmail,"Email of people whose salary is more than [" + String.format("%.2f", salary) + "]:");		
-			System.out.print("Sum of salary of people whose name starts with [" + letter.toUpperCase() + "]: ");
+			showEmail(filterEmail,"Email of people whose salary is more than [" + String.format("%.2f", salary) + "]:");
+			System.out.println();
+			
+			double sum = list.stream()
+					.filter(e -> e.getName().toUpperCase().charAt(0) == letter.toUpperCase().charAt(0))
+					.map(p -> p.getSalary())
+					.reduce(0.0, (x,y) -> x+y);
+			System.out.print("Sum of salary of people whose name starts with [" + letter.toUpperCase() + "]: " + String.format("%.2f", sum));
 
 		} catch (IOException e) {
 			System.out.println("Error reading file: " + e.getMessage());
