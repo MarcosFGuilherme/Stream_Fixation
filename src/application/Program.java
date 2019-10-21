@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import entities.Employee;
 import general.Utility;
@@ -36,7 +37,21 @@ public class Program {
 				line = br.readLine();
 			}
 			showEmployee(list,"Loading employees from file...");
-			System.out.println("Email of people whose salary is more than [" + String.format("%.2f", salary) + "]:");
+			System.out.println();
+			
+			List<Employee> filterList = list.stream()
+					.filter(e -> e.getSalary() > salary)
+					.collect(Collectors.toList());
+			
+			showEmployee(filterList,"Data of people whose salary is more than [" + String.format("%.2f", salary) + "]:");
+			
+			List<String> filterEmail = filterList.stream()
+					.map(e -> e.getEmail())
+					.sorted((s1,s2) -> s1.compareTo(s2))
+					.collect(Collectors.toList());
+					
+					
+			showEmail(filterEmail,"Email of people whose salary is more than [" + String.format("%.2f", salary) + "]:");		
 			System.out.print("Sum of salary of people whose name starts with [" + letter.toUpperCase() + "]: ");
 
 		} catch (IOException e) {
@@ -64,5 +79,17 @@ public class Program {
 		System.out.println(Utility.stringFix("", 65, "-"));
 		System.out.println(Utility.stringFix("", 65, "="));
 	}
-
+	
+	public static void showEmail(List<String> list, String title) {
+		System.out.println(Utility.stringFix("", 65, "="));
+		System.out.println(Utility.stringFix(title, 65, " "));
+		System.out.println(Utility.stringFix("", 65, "="));
+		System.out.println(Utility.stringFix("Email", 30, " "));
+		System.out.println(Utility.stringFix("", 30, "-"));
+		for (String e : list) {
+			System.out.println(Utility.stringFix(e, 30, " "));
+		}
+		System.out.println(Utility.stringFix("", 30, "-"));
+		System.out.println(Utility.stringFix("", 65, "="));
+	}
 }
